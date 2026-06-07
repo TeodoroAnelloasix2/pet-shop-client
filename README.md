@@ -14,6 +14,7 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 - **Storage**: S3 bucket (static assets) + DynamoDB (user data/sessions)
 
 ### Project structure
+
 ```sh
 .
 ├── app-pet-shop
@@ -23,6 +24,7 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 ├── pipelines
 ├── README.md
 └── scripts
-    └── create_tfstate_remote_resources.sh
+    └── create_tfstate_remote_resources.sh # --> This script manage s3 and dynamdb resources which handle terraform state
 
 ```
+
