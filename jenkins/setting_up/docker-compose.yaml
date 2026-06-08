@@ -1,5 +1,6 @@
 services:
 # settings up reverse proxy https://doc.traefik.io/traefik/setup/docker/
+# Jenkins by offical doc: https://www.jenkins.io/doc/book/installing/docker/
   rvs-proxy:
     image: traefik:v3.7.4
     container_name: traefik
@@ -105,5 +106,3 @@ volumes:
     name: jenkins-docker-certs
   jenkins-data:
     name: jenkins-data
-
-# Inspired by offical doc: https://www.jenkins.io/doc/book/installing/docker/
