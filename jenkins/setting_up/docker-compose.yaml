@@ -1,0 +1,109 @@
+services:
+# settings up reverse proxy https://doc.traefik.io/traefik/setup/docker/
+  rvs-proxy:
+    image: traefik:v3.7.4
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--providers.file.filename=/dynamic/tls.yaml"
+      - "--api.insecure=true" 
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=jenkins-net"
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      - "--metrics.prometheus=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.docker.localhost`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=<PASTE_HASH_HERE>"
+      - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
+    ports:
+      - "8080:8080"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./traefik_certs:/certs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dynamic:/dynamic:ro
+    networks:
+      jenkins-net:
+        aliases:
+          - traefik 
+        ipv4_address: 192.168.10.100
+  jenkins-docker:
+    image: docker:dind
+    container_name: jenkins-docker
+    restart: unless-stopped
+    ports:
+      - 2376:2376
+    privileged: true
+    environment:
+        DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+    networks:
+      jenkins-net:
+        aliases:
+          - docker
+    depends_on:
+      - rvs-proxy
+
+  jenkins-pipeline:
+    image: jenkins-cloud-native:v1
+    container_name: jenkins-pipeline
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins-pipeline.rule=Host(`jenkins`)"
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+    build:
+        context: .
+        dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+       DOCKER_HOST: tcp://docker:2376
+       DOCKER_CERT_PATH: /certs/client
+       DOCKER_TLS_VERIFY: 1
+       JENKINS_URL: http
+    networks:
+      jenkins-net:
+        aliases:
+          - jenkins
+    volumes:
+      - jenkins-docker-certs:/certs/client:ro
+      - jenkins-data:/var/jenkins_home
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:8080/login" ]
+      interval: 10s
+      timeout: 6s
+      retries: 8
+    depends_on:
+      - rvs-proxy
+      - jenkins-docker
+networks:
+  jenkins-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+volumes:
+  jenkins-docker-certs:
+    name: jenkins-docker-certs
+  jenkins-data:
+    name: jenkins-data
+
+# Inspired by offical doc: https://www.jenkins.io/doc/book/installing/docker/

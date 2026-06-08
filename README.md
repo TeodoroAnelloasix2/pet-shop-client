@@ -27,4 +27,3 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
     └── create_tfstate_remote_resources.sh # --> This script manage s3 and dynamdb resources which handle terraform state
 
 ```
-
