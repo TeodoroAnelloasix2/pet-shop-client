@@ -3,3 +3,5 @@ jenkins/setting_up/eksctl_Linux_amd64.tar.gz
 jenkins/setting_up/terraform_1.15.5_linux_amd64.zip
 jenkins/setting_up/traefik_certs/*
 jenkins/setting_up/.cred.env
+iac-terraform/.terraform.lock.hcl
+iac-terraform/.terraform/*
