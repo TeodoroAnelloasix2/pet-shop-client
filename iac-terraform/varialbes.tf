@@ -4,7 +4,7 @@ variable "azs" {
   default     = ["us-east-1a", "us-east-1b"]
 }
 
-variable "cluster-name" {
+variable "root_cluster_name" {
   description = "Cluster name"
   type        = string
   default     = "pet-shop-cluster"
@@ -14,11 +14,21 @@ variable "cluster-name" {
 variable "kubernetes_version" {
   description = "Kubectl version"
   type        = string
-  default     = "1.35.5"
+  default     = "1.34"
 }
 
-variable "petshp-vpc_id" {
+variable "petshop_vpc_id" {
   description = "VPC id"
   type        = string
-  default     = "vpc-00fae73877934ba67"
+}
+
+variable "private_subnets_id" {
+  description = "List of private subnets ids"
+  type = list(string)
+}
+
+
+variable "pubblic_access_cidr" {
+  description = "IP white list: curl -s ifconfig.me"
+  type = list(string)
 }

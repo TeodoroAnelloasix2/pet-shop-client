@@ -5,3 +5,4 @@ jenkins/setting_up/traefik_certs/*
 jenkins/setting_up/.cred.env
 iac-terraform/.terraform.lock.hcl
 iac-terraform/.terraform/*
+notes.md
