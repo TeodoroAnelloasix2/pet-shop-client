@@ -36,3 +36,9 @@ module "ecr" {
   source        = "./modules/ecr"
   tag_exclusion = var.ecr_tag_exclusion
 }
+
+module "rds_psql" {
+  source  = "./modules/rds_psql"
+  pr_name = var.project_name
+  private_subnet = module.vpc.private_subnet_id
+}

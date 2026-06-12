@@ -38,3 +38,13 @@ variable "ecr_tag_exclusion" {
   type        = list(string)
   default     = ["latest*", "dev*"]
 }
+
+variable "project_name" {
+  description = "Project name"
+  type        = string
+  default     = "pet-shop"
+}
+variable "instance_class" {
+  type    = string
+  default = "t3.small"
+}
