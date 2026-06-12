@@ -24,10 +24,15 @@ module "vpc" {
 }
 
 module "eks" {
-  source             = "./modules/eks"
-  kubernetes_version = var.kubernetes_version
-  petshop_vpc_id = module.vpc.vpc_id # Get values form vpc's output
-  private_subnets_id = module.vpc.private_subnet_id # Get values form vpc's output
-  cluster_name = var.root_cluster_name
+  source              = "./modules/eks"
+  kubernetes_version  = var.kubernetes_version
+  petshop_vpc_id      = module.vpc.vpc_id            # Get values form vpc's output
+  private_subnets_id  = module.vpc.private_subnet_id # Get values form vpc's output
+  cluster_name        = var.root_cluster_name
   pubblic_access_cidr = var.pubblic_access_cidr
+}
+
+module "ecr" {
+  source        = "./modules/ecr"
+  tag_exclusion = var.ecr_tag_exclusion
 }

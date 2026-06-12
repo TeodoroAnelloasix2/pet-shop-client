@@ -11,19 +11,47 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 - **Orchestration**: AWS EKS (Kubernetes)
 - **Infrastructure as Code**: Terraform (remote state on S3 + DynamoDB locking)
 - **CI/CD**: Jenkins pipeline (build → test → push → deploy)
-- **Storage**: S3 bucket (static assets) + DynamoDB (user data/sessions)
+- **Storage**: S3 bucket (static assets) + DynamoDB (login)
 
 ### Project structure
 
 ```sh
 .
 ├── app-pet-shop
+├── eks
+├── how_to_run.md
 ├── iac-terraform
-│   └── bucket-s3
-├── k8s
-├── pipelines
+│   ├── backend.tf
+│   ├── main.tf
+│   ├── modules
+│   │   ├── ecr
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── variables.tf
+│   │   ├── eks
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── variables.tf
+│   │   └── vpc
+│   │       ├── main.tf
+│   │       ├── output.tf
+│   │       └── variables.tf
+│   └── varialbes.tf
+├── jenkins
+│   └── setting_up
+│       ├── awscliv2.zip
+│       ├── docker-compose.yaml
+│       ├── Dockerfile
+│       ├── dynamic
+│       │   └── tls.yaml
+│       ├── eksctl_Linux_amd64.tar.gz
+│       ├── set_up_jenkins.sh
+│       ├── terraform_1.15.5_linux_amd64.zip
+│       └── traefik_certs
+│           ├── local.crt
+│           └── local.key
+├── notes.md
 ├── README.md
 └── scripts
-    └── create_tfstate_remote_resources.sh # --> This script manage s3 and dynamdb resources which handle terraform state
-
+    └── create_tfstate_remote_resources.sh
 ```

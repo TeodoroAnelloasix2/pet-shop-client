@@ -24,11 +24,17 @@ variable "petshop_vpc_id" {
 
 variable "private_subnets_id" {
   description = "List of private subnets ids"
-  type = list(string)
+  type        = list(string)
 }
 
 
 variable "pubblic_access_cidr" {
   description = "IP white list: curl -s ifconfig.me"
-  type = list(string)
+  type        = list(string)
+}
+
+variable "ecr_tag_exclusion" {
+  description = "List of image tags excluded from immutability"
+  type        = list(string)
+  default     = ["latest*", "dev*"]
 }

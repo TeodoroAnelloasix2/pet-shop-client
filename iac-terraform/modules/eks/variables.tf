@@ -19,5 +19,5 @@ variable "private_subnets_id" {
 
 variable "pubblic_access_cidr" {
   description = "List of allowed ip"
-  type = list(string)
+  type        = list(string)
 }
