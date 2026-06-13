@@ -15,3 +15,8 @@ output "private_subnet_id" {
   description = "Private subnet id"
   value       = aws_subnet.private[*].id
 }
+
+output "vpc_cidr" {
+  description = "VPC cidr block"
+  value       = aws_vpc.this-petshop-vpc.cidr_block
+}

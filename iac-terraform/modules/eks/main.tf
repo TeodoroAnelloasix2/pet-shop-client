@@ -7,7 +7,7 @@ module "eks" {
   kubernetes_version                       = var.kubernetes_version
   enable_cluster_creator_admin_permissions = true
 
-
+  security_group_id = aws_security_group.this.id
   # Network
   vpc_id     = var.petshop_vpc_id
   subnet_ids = var.private_subnets_id
@@ -56,5 +56,22 @@ module "eks" {
         Name = "${var.cluster_name}-node-group-2"
       }
     }
+  }
+}
+
+resource "aws_security_group" "this" {
+  name = "${var.pr_name}-eks-sg"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }

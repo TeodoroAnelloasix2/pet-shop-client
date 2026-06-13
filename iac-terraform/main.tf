@@ -30,6 +30,8 @@ module "eks" {
   private_subnets_id  = module.vpc.private_subnet_id # Get values form vpc's output
   cluster_name        = var.root_cluster_name
   pubblic_access_cidr = var.pubblic_access_cidr
+  pr_name             = var.project_name
+  vpc_cidr            = module.vpc.vpc_cidr
 }
 
 module "ecr" {
@@ -38,7 +40,13 @@ module "ecr" {
 }
 
 module "rds_psql" {
-  source  = "./modules/rds_psql"
-  pr_name = var.project_name
+  source         = "./modules/rds_psql"
+  pr_name        = var.project_name
   private_subnet = module.vpc.private_subnet_id
+  subnets        = module.vpc.private_subnet_id
+  vpc_id         = module.vpc.vpc_id
+  eks_sg_id      = module.eks.cluster_sg
+  username = var.pssql_data.Username
+  db_name = var.pssql_data.Db
+  password = var.pssql_data.Password
 }

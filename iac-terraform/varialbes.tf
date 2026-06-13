@@ -48,3 +48,8 @@ variable "instance_class" {
   type    = string
   default = "t3.small"
 }
+
+variable "pssql_data" {
+  description = "Db name,username,password"
+  type = map(string)
+}

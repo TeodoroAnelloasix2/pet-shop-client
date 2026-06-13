@@ -21,3 +21,12 @@ variable "pubblic_access_cidr" {
   description = "List of allowed ip"
   type        = list(string)
 }
+
+variable "pr_name" {
+  description = "Project name"
+  type        = string
+}
+variable "vpc_cidr" {
+  description = "Main vpc cidr"
+  type        = string
+}

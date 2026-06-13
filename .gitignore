@@ -6,3 +6,4 @@ jenkins/setting_up/.cred.env
 iac-terraform/.terraform.lock.hcl
 iac-terraform/.terraform/*
 notes.md
+iac-terraform/terraform.tfvars
