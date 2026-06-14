@@ -29,6 +29,8 @@ resource "aws_ecr_lifecycle_policy" "ecr_rules" {
       "description": "Expire images older than 3 days",
       "selection": {
         "tagStatus": "tagged",
+        "tagPrefixList": ["dev"],
+        "tagPrefixList": ["prod"],
         "countType": "imageCountMoreThan",
         "countNumber": 3
       },
@@ -38,10 +40,25 @@ resource "aws_ecr_lifecycle_policy" "ecr_rules" {
     },
     {
       "rulePriority": 2,
-      "description": "Delete images not pulled in 90 days",
+      "description": "Delete images not pulled in 5 days",
       "selection": {
         "tagStatus": "any",
         "countType": "sinceImagePulled",
+        "countUnit": "days",
+        "countNumber": 5
+      },
+      "action": {
+        "type": "transition",
+        "targetStorageClass": "archive"
+      }
+    },
+    {
+      "rulePriority": 3,
+      "description": "Delete images archived for more than 90 days",
+      "selection": {
+        "tagStatus": "any",
+        "storageClass": "archive",
+        "countType": "sinceImageTransitioned",
         "countUnit": "days",
         "countNumber": 90
       },
@@ -51,5 +68,5 @@ resource "aws_ecr_lifecycle_policy" "ecr_rules" {
     }
   ]
 }
-  EOF
+EOF
 }

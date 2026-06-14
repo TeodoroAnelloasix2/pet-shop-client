@@ -31,8 +31,8 @@ module "rds_psql" {
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
 
-  db_name = var.dbname
-  username = var.username
+  db_name     = var.dbname
+  username    = var.username
   password_wo = var.password
 }
 
@@ -46,10 +46,10 @@ resource "aws_db_subnet_group" "this" {
 
 resource "aws_security_group" "this" {
   name        = "${var.pr_name}-sg"
-  description = "Postgress form eks nodes"
+  description = "Postgress from eks nodes"
   vpc_id      = var.vpc_id
   ingress {
-    description     = "eks->postgresSql comunication"
+    description     = "eks postgresSql comunication"
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"

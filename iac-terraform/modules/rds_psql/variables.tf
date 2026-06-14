@@ -13,17 +13,17 @@ variable "bd_engine" {
 variable "bd_version" {
   description = "Engine sql"
   type        = string
-  default     = "18.4"
+  default     = "17.4"
 }
 
 variable "db_family" {
   type    = string
-  default = "postgres18"
+  default = "postgres17"
 }
 
 variable "instances_class" {
   type    = string
-  default = "t3.small"
+  default = "db.t3.micro"
 }
 
 variable "private_subnet" {

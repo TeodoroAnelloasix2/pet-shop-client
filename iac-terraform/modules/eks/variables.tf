@@ -12,12 +12,12 @@ variable "petshop_vpc_id" {
   type        = string
 }
 
-variable "private_subnets_id" {
+variable "private_subnet_id" {
   description = "CIDR blocks for private subnet"
   type        = list(string)
 }
 
-variable "pubblic_access_cidr" {
+variable "public_access_cidr" {
   description = "List of allowed ip"
   type        = list(string)
 }

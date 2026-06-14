@@ -10,12 +10,12 @@ module "eks" {
   security_group_id = aws_security_group.this.id
   # Network
   vpc_id     = var.petshop_vpc_id
-  subnet_ids = var.private_subnets_id
+  subnet_ids = var.private_subnet_id
 
   # Endpoint access
   endpoint_public_access       = true
   endpoint_private_access      = true
-  endpoint_public_access_cidrs = var.pubblic_access_cidr
+  endpoint_public_access_cidrs = var.public_access_cidr
   # Logging
   enabled_log_types                      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cloudwatch_log_group_retention_in_days = 7

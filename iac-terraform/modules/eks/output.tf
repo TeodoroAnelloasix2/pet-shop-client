@@ -1,3 +1,4 @@
 output "cluster_sg" {
-  value = "Eks cluster  security group"
+  description = "Eks cluster  security group"
+  value       = module.eks.node_security_group_id
 }

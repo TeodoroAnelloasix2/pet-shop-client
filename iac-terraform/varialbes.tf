@@ -17,20 +17,10 @@ variable "kubernetes_version" {
   default     = "1.34"
 }
 
-variable "petshop_vpc_id" {
-  description = "VPC id"
-  type        = string
-}
 
-variable "private_subnets_id" {
-  description = "List of private subnets ids"
-  type        = list(string)
-}
-
-
-variable "pubblic_access_cidr" {
+variable "public_access_cidr" {
   description = "IP white list: curl -s ifconfig.me"
-  type        = list(string)
+  type        = string
 }
 
 variable "ecr_tag_exclusion" {
@@ -51,5 +41,5 @@ variable "instance_class" {
 
 variable "pssql_data" {
   description = "Db name,username,password"
-  type = map(string)
+  type        = map(string)
 }

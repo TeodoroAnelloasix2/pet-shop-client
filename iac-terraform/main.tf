@@ -24,14 +24,15 @@ module "vpc" {
 }
 
 module "eks" {
-  source              = "./modules/eks"
-  kubernetes_version  = var.kubernetes_version
-  petshop_vpc_id      = module.vpc.vpc_id            # Get values form vpc's output
-  private_subnets_id  = module.vpc.private_subnet_id # Get values form vpc's output
-  cluster_name        = var.root_cluster_name
-  pubblic_access_cidr = var.pubblic_access_cidr
-  pr_name             = var.project_name
-  vpc_cidr            = module.vpc.vpc_cidr
+  source             = "./modules/eks"
+  depends_on         = [module.vpc]
+  kubernetes_version = var.kubernetes_version
+  vpc_cidr           = module.vpc.vpc_cidr          # Get values form vpc's output
+  petshop_vpc_id     = module.vpc.vpc_id            # Get values form vpc's output
+  private_subnet_id  = module.vpc.private_subnet_id # Get values form vpc's output
+  cluster_name       = var.root_cluster_name
+  public_access_cidr = [var.public_access_cidr]
+  pr_name            = var.project_name
 }
 
 module "ecr" {
@@ -46,7 +47,7 @@ module "rds_psql" {
   subnets        = module.vpc.private_subnet_id
   vpc_id         = module.vpc.vpc_id
   eks_sg_id      = module.eks.cluster_sg
-  username = var.pssql_data.Username
-  db_name = var.pssql_data.Db
-  password = var.pssql_data.Password
+  username       = var.pssql_data.Username
+  dbname         = var.pssql_data.Db
+  password       = var.pssql_data.Password
 }
