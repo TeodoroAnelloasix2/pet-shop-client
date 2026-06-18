@@ -7,3 +7,5 @@ iac-terraform/.terraform.lock.hcl
 iac-terraform/.terraform/*
 notes.md
 iac-terraform/terraform.tfvars
+scripts/global-bundle.pem
+scripts/cred.env

@@ -13,7 +13,7 @@ variable "bd_engine" {
 variable "bd_version" {
   description = "Engine sql"
   type        = string
-  default     = "17.4"
+  default     = "17.10"
 }
 
 variable "db_family" {
