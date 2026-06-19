@@ -64,7 +64,7 @@ delete_previous(){
 create_aws_secret(){
     aws secretsmanager create-secret --name "$db_credentials_name" --region "$aws_region_script" \
         --add-replica-regions Region="$region_replica"  --force-overwrite-replica-secret \
-        --secret-string file:///"$tmpjson" \
+        --secret-string file://"$tmpjson" \
         --description  "$desc" \
         --tags Key=Project,Value=pet-shop Key=Environment,Value=prod Key=Manteiner,Value=TeodoroAnelloasix2 \
         || { echo "Error creating cert db secret,aborting" ; exit 1; }
@@ -90,23 +90,25 @@ initial_sequence(){
 }
 
 main(){
-
     while getopts ":fhg" option; do
         case $option in
-            h) 
-                Help
-                exit 0;;
+            h) Help
+               exit 0
+               ;;
             f)
                echo "Checking if secrets already exists"
                initial_sequence
-               if [ $checked -eq 0 ];then
+               if [ $checked -eq 1 ];then
                     echo "Deleting previous resource"
                     delete_previous
+                    sleep 20
+                
                fi
-               echo "Creating secrets"
+               echo "Creating new secrets"
                create_aws_secret
                del_json
-               exit 0;;
+               exit 0
+               ;;
             g) 
                echo "Checking if secrets already exists"
                initial_sequence
@@ -116,7 +118,8 @@ main(){
                     del_json
                fi   
                echo "Secrets already exists,skipping"
-               exit 0;;
+               exit 0
+               ;;
             \?)
                 echo "Invalid option: -$OPTARG" >&2
                 echo "Use -h for help." >&2
@@ -126,4 +129,4 @@ main(){
     done
 }
 
-main
+main "$@"
