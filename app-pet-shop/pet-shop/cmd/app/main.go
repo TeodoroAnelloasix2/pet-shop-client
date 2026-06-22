@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"os"
-	formatsecret "startloginBBDD/internal/formatSecret"
-	"startloginBBDD/internal/secretaws"
+	"pet-shop/internal/formatsecret"
+	"pet-shop/internal/secretaws"
 )
 
 func main() {
+
 	fmt.Println("Retrieving secrets")
 	secrets, err := secretaws.FetchSecret()
 	if err != nil {

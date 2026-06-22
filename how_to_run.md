@@ -10,3 +10,12 @@
 3) start aws infra: 
     - terraform apply -target=module.vpc -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
     - terraform apply -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
+4) build app, get ecr info:
+
+   ecr_repo=$(aws ecr describe-repositories --region us-east-1 --query "repositories[?repositoryName=='prod_petshop_project'].repositoryUri" --no-cli-pager --output text)
+   
+   docker build -t $ecr_repo:dev1 .
+   
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 
+
+5) run script/eks_config.sh

@@ -2,8 +2,8 @@ package secretaws
 
 import (
 	"fmt"
-	"startloginBBDD/internal/ctxgenerator"
-	v "startloginBBDD/internal/variables"
+	"pet-shop/internal/ctxgenerator"
+	v "pet-shop/internal/variables"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"

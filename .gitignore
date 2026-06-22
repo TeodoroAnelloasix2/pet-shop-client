@@ -9,4 +9,5 @@ notes.md
 iac-terraform/terraform.tfvars
 scripts/global-bundle.pem
 scripts/cred.env
-scripts/init_login_db/bin/*
+app-pet-shop/pet-shop/bin/*
+eks/petshop.config

@@ -1,4 +1,4 @@
-module startloginBBDD
+module pet-shop
 
 go 1.25.5
 

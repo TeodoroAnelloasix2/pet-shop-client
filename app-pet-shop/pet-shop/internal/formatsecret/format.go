@@ -3,7 +3,7 @@ package formatsecret
 import (
 	"encoding/json"
 	"fmt"
-	"startloginBBDD/internal/variables"
+	"pet-shop/internal/variables"
 )
 
 func Formatsecret(txt string) (cred variables.Credentials, err error) {
