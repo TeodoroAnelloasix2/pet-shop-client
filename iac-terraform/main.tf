@@ -51,3 +51,10 @@ module "rds_psql" {
   dbname         = var.pssql_data.Db
   password       = var.pssql_data.Password
 }
+module "s3" {
+  source = "./modules/s3"
+}
+
+module "iam" {
+  source = "./modules/iam"  
+}

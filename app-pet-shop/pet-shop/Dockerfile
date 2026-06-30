@@ -11,12 +11,13 @@ COPY ./internal ./internal
 
 RUN GOOS=linux GOARCH=amd64 go build -o runner cmd/app/main.go
 
-FROM scratch
+FROM debian:bookworm-slim
 
 WORKDIR /webapp
 
+COPY ./resources .
 COPY --from=compiler /webapp/runner /webapp/runner
 
 EXPOSE 80
-
-CMD [ "/webapp/runner" ]
+#CMD ["sh","-c","tail -f","/dev/null"] #Debug
+CMD [ "/webapp/runner"]

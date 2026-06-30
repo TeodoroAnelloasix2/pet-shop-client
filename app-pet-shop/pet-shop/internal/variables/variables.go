@@ -12,3 +12,10 @@ type Credentials struct {
 	Username string `json:"Username"`
 	Password string `json:"Password"`
 }
+
+type UserClient struct {
+	Id       int
+	Name     string
+	Email    string
+	Password string
+}
