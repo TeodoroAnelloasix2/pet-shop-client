@@ -18,67 +18,86 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 ```sh
 .
 ├── app-pet-shop
+│   └── pet-shop
+│       ├── cmd
+│       │   └── app
+│       │       └── main.go
+│       ├── Dockerfile
+│       ├── go.mod
+│       ├── go.sum
+│       ├── internal
+│       │   ├── ctxgenerator
+│       │   │   └── ctxgenerator.go
+│       │   ├── formatsecret
+│       │   │   └── format.go
+│       │   ├── httpserver
+│       │   │   ├── handlers.go
+│       │   │   └── server.go
+│       │   ├── secretaws
+│       │   │   └── secret.go
+│       │   └── variables
+│       │       └── variables.go
+│       └── resources
+│           └── templates
+│               ├── home.css
+│               ├── home.html
+│               ├── login.html
+│               ├── register.html
+│               └── user.html
 ├── eks
+│   ├── namespace.yaml
+│   └── petshop.config
 ├── how_to_run.md
 ├── iac-terraform
-│   ├── backend.tf
-│   ├── main.tf
-│   ├── modules
-│   │   ├── ecr
-│   │   │   ├── main.tf
-│   │   │   ├── output.tf
-│   │   │   └── variables.tf
-│   │   ├── eks
-│   │   │   ├── main.tf
-│   │   │   ├── output.tf
-│   │   │   └── variables.tf
-│   │   ├── rds_psql
-│   │   │   ├── main.tf
-│   │   │   ├── output.tf
-│   │   │   └── variables.tf
-│   │   └── vpc
-│   │       ├── main.tf
-│   │       ├── output.tf
-│   │       └── variables.tf
-│   ├── terraform.tfvars
-│   └── varialbes.tf
+│   ├── backend.tf
+│   ├── main.tf
+│   ├── modules
+│   │   ├── ecr
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── variables.tf
+│   │   ├── eks
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── variables.tf
+│   │   ├── iam
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── varaibles.tf
+│   │   ├── rds_psql
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   └── variables.tf
+│   │   ├── s3
+│   │   │   ├── main.tf
+│   │   │   └── varaibles.tf
+│   │   └── vpc
+│   │       ├── main.tf
+│   │       ├── output.tf
+│   │       └── variables.tf
+│   ├── terraform.tfvars
+│   └── varialbes.tf
 ├── jenkins
-│   └── setting_up
-│       ├── awscliv2.zip
-│       ├── docker-compose.yaml
-│       ├── Dockerfile
-│       ├── dynamic
-│       │   └── tls.yaml
-│       ├── eksctl_Linux_amd64.tar.gz
-│       ├── set_up_jenkins.sh
-│       ├── terraform_1.15.5_linux_amd64.zip
-│       └── traefik_certs
-│           ├── local.crt
-│           └── local.key
+│   └── setting_up
+│       ├── awscliv2.zip
+│       ├── docker-compose.yaml
+│       ├── Dockerfile
+│       ├── dynamic
+│       │   └── tls.yaml
+│       ├── eksctl_Linux_amd64.tar.gz
+│       ├── set_up_jenkins.sh
+│       ├── terraform_1.15.5_linux_amd64.zip
+│       └── traefik_certs
+│           ├── local.crt
+│           └── local.key
 ├── notes.md
 ├── README.md
 └── scripts
     ├── create_secrets.sh
     ├── create_tfstate_remote_resources.sh
     ├── cred.env
+    ├── eks_config.sh
     ├── global-bundle.pem
-    └── init_login_db
-        ├── bin
-        │   └── executable
-        ├── cmd
-        │   └── app
-        │       └── main.go
-        ├── go.mod
-        ├── go.sum
-        └── internal
-            ├── ctxgenerator
-            │   └── ctxgenerator.go
-            ├── formatSecret
-            │   └── format.go
-            ├── secretaws
-            │   └── secret.go
-            └── variables
-                └── variables.go
-
+    └── iam-alb-policy.json
 
 ```
