@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent 'jenkins-node'
+    agent {node 'jenkins-node' }
     stages {
         stage('test'){
             steps{
