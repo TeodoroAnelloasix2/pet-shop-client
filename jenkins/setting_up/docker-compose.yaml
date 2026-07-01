@@ -28,7 +28,7 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=<PASTE_HASH_HERE>"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$4jWEGYVX$$k8b.vMmVz7x28Z8Z70Y18."
       - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
     ports:
       - "8080:8080"
