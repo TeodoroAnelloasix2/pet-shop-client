@@ -2,23 +2,16 @@
 
 pipeline {
     agent {node 'jenkins-node' }
+    environment {
+       AWS_ACCESS_KEY_ID = credentials('pet-shop-ci-access-key-id')
+       AWS_SECRET_ACCESS_KEY = credentials('SecretAccessKey-pet-shop-jenkins-ci')
+       AWS_DEFAULT_REGION='us-east-1'
+    }
     stages {
         stage('test login ecr'){
             steps{
-                withAWS(
-                        region:'us-east-1',
-                        credentials:'pet-shop-jenkins-ci-keys',
-                        role: 'pet-shop-jenkins-ci-role',
-                        roleAccount: '013484737363',
-                        roleSessionName: 'petshop-ci-session'
-                    ){
-                    script{
-                        def login = ecrLogin()
-
-                        sh login
-                    }
+                sh('aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin')
                 }
             }
         }
-    }
 }
