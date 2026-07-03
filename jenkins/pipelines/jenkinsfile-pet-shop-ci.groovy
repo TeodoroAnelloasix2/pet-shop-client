@@ -12,10 +12,12 @@ pipeline {
     }
     stages {
         stage('Build'){
-            dir('./app-pet-shop/pet-shop'){
-                sh('''
-                docker build -t ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_VERSION} .
-                ''')
+            steps{
+                dir('./app-pet-shop/pet-shop'){
+                    sh('''
+                    docker build -t ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_VERSION} .
+                    ''')
+                }
             }
             
         }
