@@ -5,7 +5,13 @@ pipeline {
     stages {
         stage('test login ecr'){
             steps{
-                withAWS(region:'us-east-1',credentials:'pet-shop-jenkins-ci-keys'){
+                withAWS(
+                        region:'us-east-1',
+                        credentials:'pet-shop-jenkins-ci-keys',
+                        role: 'pet-shop-jenkins-ci-role',
+                        roleAccount: '013484737363',
+                        roleSessionName: 'petshop-ci-session'
+                    ){
                     script{
                         def login = ecrLogin()
 
