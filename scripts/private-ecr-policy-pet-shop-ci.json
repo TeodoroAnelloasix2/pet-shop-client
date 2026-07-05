@@ -1,0 +1,18 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "PetShopECRfullcontroll",
+			"Effect": "Allow",
+			"Action":"ecr:*",
+			"Resource": "arn:aws:ecr:us-east-1:013484737363:repository/prod_petshop_project"
+		},
+		{
+			"Sid": "AllowLogin",
+			"Effect": "Allow",
+			"Action":"ecr:GetAuthorizationToken",
+			"Resource": "*"
+			
+		}
+	]
+}

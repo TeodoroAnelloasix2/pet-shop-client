@@ -20,8 +20,8 @@ svc_account_name="${policy_name}-svc-account"
 svc_account_policy_mandatory_resources="${policy_mandatory_resources}-svc-account"
 policy_arn=""
 base_eks="../eks"
-namespace_file="${base_eks}/namespace.yaml"
-namespace="pet-shop-prod"
+namespace_file="${base_eks}/base/namespace.yaml"
+namespace="kube-system"
 cfg_file="${base_eks}/petshop.config"
 alb_repo_eks="https://aws.github.io/eks-charts"
 service_account_name="petshop-alb-controller"
@@ -61,7 +61,8 @@ Create_policy_iamserviceaccount_mandatory_resources(){
         echo "Failed to get policy arn, it does exists ? Aborting"
         exit 1
     fi
-     eksctl create iamserviceaccount --region "$aws_region" \
+    
+    eksctl create iamserviceaccount --region "$aws_region" \
     --namespace="$namespace"    \
     --cluster="$cluster_name"  \
     --name="$svc_account_policy_mandatory_resources" \
@@ -77,11 +78,6 @@ Create_config_file(){
       --no-cli-pager || { echo "Failed to create config file, aborting" ; exit 1; }
 }
 
-Create_namespace(){
-    Create_config_file
-    kubectl --kubeconfig "$cfg_file" apply -f "$namespace_file" || { echo "Failed to create namespace, aborting" ; exit 1; }
-}
-
 Install_alb_controller(){
 
     helm repo add eks "$alb_repo_eks" || { echo "Failed to add helm repo, aborting" ; exit 1; }
@@ -92,7 +88,7 @@ Install_alb_controller(){
         --namespace="$namespace" \
         --set clusterName="$cluster_name" \
         --set serviceAccount.create=false \
-        --set serviceAccount.name="$service_account_name" \
+        --set serviceAccount.name="$svc_account_name" \
         --set region="$aws_region" \
         --set vpcId=$(aws ec2 describe-vpcs --query "Vpcs[?Tags[?Key=='Name' && Value=='pet-shop-vpc']].VpcId" --output text --no-cli-pager) \
         || { echo "Failed to install eks/aws-load-balancer-controller, aborting" ; exit 1; }
@@ -105,9 +101,8 @@ CreateOIDC(){
 }
 
 main(){
-    
+    Create_config_file
     CreateOIDC
-    Create_namespace
     Create_policy_iamserviceaccount
     Create_policy_iamserviceaccount_mandatory_resources
     Install_alb_controller

@@ -38,6 +38,8 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │       │   └── variables
 │       │       └── variables.go
 │       └── resources
+│           ├── images
+│           │   └── pet.jpg
 │           └── templates
 │               ├── home.css
 │               ├── home.html
@@ -78,6 +80,8 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │   ├── terraform.tfvars
 │   └── varialbes.tf
 ├── jenkins
+│   ├── pipelines
+│   │   └── jenkinsfile-pet-shop-ci.groovy
 │   └── setting_up
 │       ├── awscliv2.zip
 │       ├── docker-compose.yaml
@@ -98,6 +102,9 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
     ├── cred.env
     ├── eks_config.sh
     ├── global-bundle.pem
-    └── iam-alb-policy.json
+    ├── iam-alb-policy.json
+    ├── jenkins-user-assume-policy.json
+    ├── pet-shop-jenkins-ci-role.json
+    └── private-ecr-policy-pet-shop-ci.json
 
 ```

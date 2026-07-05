@@ -10,12 +10,23 @@
 3) start aws infra: 
     - terraform apply -target=module.vpc -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
     - terraform apply -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
-4) build app, get ecr info:
+
+4) Create user, group , policy / attach policy to group , add user to the group
+
+5) build app, get ecr info:  //TODO (Use Jenkins pipeline)
 
    ecr_repo=$(aws ecr describe-repositories --region us-east-1 --query "repositories[?repositoryName=='prod_petshop_project'].repositoryUri" --no-cli-pager --output text)
    
    docker build -t $ecr_repo:dev1 .
    
-   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 013484737363.dkr.ecr.us-east-1.amazonaws.com
 
-5) run script/eks_config.sh
+
+6) create namespace  kubectl --kubeconfig ../petshop.config apply -f namespace.yaml 
+
+7) run script/eks_config_alb_components.sh
+
+8) kubectl apply -k overlays/prod/ --kubeconfig ./petshop.config
+
+
+
