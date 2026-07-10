@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 - ../../base
 
-namespace: pet-shop-prod 
+namespace: pet-shop-prod
 
 labels:
   - pairs:
@@ -12,7 +12,8 @@ labels:
       managed-by: kustomize
     includeSelectors: false  
     includeTemplates: false
+
 images:
   - name: pet-shop-to-customize
     newName: "013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project"
-    newTag: "22"
+    newTag: ${IMAGE_TAG}
