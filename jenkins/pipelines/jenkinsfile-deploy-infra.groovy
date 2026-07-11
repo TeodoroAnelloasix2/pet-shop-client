@@ -12,6 +12,18 @@ pipeline{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     stages{
+        stage('Create tfvars'){
+            steps{
+                dir('./iac-terraform'){
+                    sh('''
+                    pwd=$(aws secretsmanager get-secret-value --secret-id petshop-db-secret-pem --query 'SecretString' --output text | jq '.Password')
+                    user=$(aws secretsmanager get-secret-value --secret-id petshop-db-secret-pem --query 'SecretString' --output text | jq '.Username')
+                    db="petshopdb"
+                    echo -e "pssql_data = { \n\"Username\" = ${user}\n\"Db\"= ${db}\n\"Password\" = ${pwd} \n}">terraform.tfvars
+                    ''')
+                }
+            }
+        }
         stage('Plan'){
             steps{
                 dir('./iac-terraform'){

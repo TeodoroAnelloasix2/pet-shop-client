@@ -56,5 +56,5 @@ module "s3" {
 }
 
 module "iam" {
-  source = "./modules/iam"  
+  source = "./modules/iam"
 }
