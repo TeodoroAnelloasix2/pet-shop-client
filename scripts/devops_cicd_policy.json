@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid":"ResourceDevopsAccess",
+            "Sid": "ResourceDevopsAccess",
             "Effect": "Allow",
             "Action": [
                 "ec2:*",
@@ -20,12 +20,13 @@
                 "lambda:*",
                 "route53:*",
                 "acm:*",
-                "dynamodb:*"                
+                "dynamodb:*",
+                "ssm:*"
             ],
             "Resource": "*"
         },
         {
-            "Sid":"DevopsIamAccess",
+            "Sid": "DevopsIamAccess",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -36,7 +37,9 @@
                 "iam:DeletePolicy",
                 "iam:GetRole",
                 "iam:ListRoles",
-                "iam:PassRole"
+                "iam:PassRole",
+                "iam:ListRolePolicies",
+                "iam:ListAttachedRolePolicies"
             ],
             "Resource": "*"
         }
