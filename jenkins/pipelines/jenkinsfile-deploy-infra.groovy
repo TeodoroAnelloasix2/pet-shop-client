@@ -7,6 +7,7 @@ pipeline{
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-user-secret-access-key')
         AWS_DEFAULT_REGION='us-east-1'
         INFRA_VERSION = "${env.BUILD_NUMBER}"
+        TFVARS_FILE=
     }
     parameters{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
@@ -14,23 +15,13 @@ pipeline{
     stages{
         stage('Create tfvars'){
             steps{
-                dir('./iac-terraform'){
-                    sh('''
-                    pwd=$(aws secretsmanager get-secret-value --secret-id petshop-db-secret-pem --query 'SecretString' --output text | jq '.Password')
-                    user=$(aws secretsmanager get-secret-value --secret-id petshop-db-secret-pem --query 'SecretString' --output text | jq '.Username')
-                    db="petshopdb"
-                    
-                    cat >terraform.tfvars <<<EOF
-                    pssql_data = {
-                        "Username" = ${user}
-                        "Db"       = "${db}"
-                        "Password" = ${pwd}
+                withCredentials([file(credentialsId: 'petshop-tfvars',variable: 'f')]){
+                    dir('./iac-terraform'){
+                        sh('''
+                        cp ${f} ./terraform.tfvars
+                        terraform fmt --recursive
+                        ''')
                     }
-                    EOF
-                    cat terraform.tfvars
-                    sleep 2
-                    terraform fmt
-                    ''')
                 }
             }
         }
