@@ -47,7 +47,15 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │               ├── register.html
 │               └── user.html
 ├── eks
-│   ├── namespace.yaml
+│   ├── base
+│   │   ├── deployment.yaml
+│   │   ├── ingress.yaml
+│   │   ├── kustomization.yaml
+│   │   ├── namespace.yaml
+│   │   └── service.yaml
+│   ├── overlays
+│   │   └── prod
+│   │       └── kustomization.yaml
 │   └── petshop.config
 ├── how_to_run.md
 ├── iac-terraform
@@ -81,6 +89,7 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │   └── varialbes.tf
 ├── jenkins
 │   ├── pipelines
+│   │   ├── jenkinsfile-deploy-infra.groovy
 │   │   └── jenkinsfile-pet-shop-ci.groovy
 │   └── setting_up
 │       ├── awscliv2.zip
@@ -97,10 +106,12 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 ├── notes.md
 ├── README.md
 └── scripts
+    ├── create-ci-cd-groups-users.sh
     ├── create_secrets.sh
     ├── create_tfstate_remote_resources.sh
     ├── cred.env
-    ├── eks_config.sh
+    ├── devops_cicd_policy.json
+    ├── eks_config_alb_components.sh
     ├── global-bundle.pem
     ├── iam-alb-policy.json
     ├── jenkins-user-assume-policy.json
