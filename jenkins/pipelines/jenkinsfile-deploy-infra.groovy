@@ -7,7 +7,6 @@ pipeline{
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-user-secret-access-key')
         AWS_DEFAULT_REGION='us-east-1'
         INFRA_VERSION = "${env.BUILD_NUMBER}"
-        TFVARS_FILE=
     }
     parameters{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
