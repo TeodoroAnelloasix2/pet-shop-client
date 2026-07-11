@@ -19,7 +19,8 @@
                 "cloudwatch:*",
                 "lambda:*",
                 "route53:*",
-                "acm:*"
+                "acm:*",
+                "dynamodb:*"                
             ],
             "Resource": "*"
         },
