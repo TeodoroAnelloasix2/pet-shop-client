@@ -27,7 +27,8 @@ pipeline{
                         "Password" = ${pwd}
                     }
                     EOF
-                    
+                    cat terraform.tfvars
+                    sleep 2
                     terraform fmt
                     ''')
                 }
