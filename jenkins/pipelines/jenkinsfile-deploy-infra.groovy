@@ -20,7 +20,7 @@ pipeline{
                     user=$(aws secretsmanager get-secret-value --secret-id petshop-db-secret-pem --query 'SecretString' --output text | jq '.Username')
                     db="petshopdb"
                     
-                    cat > terraform.tfvars <<EOF
+                    cat >terraform.tfvars <<EOF
                     pssql_data = {
                         "Username" = ${user}
                         "Db"       = "${db}"
