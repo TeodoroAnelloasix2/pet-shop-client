@@ -13,8 +13,11 @@ set -euo pipefail
 # Variables
 cicd_group="DevopsGroup"
 cicd_user="jenkins"
-cicd_quey="Users[?UserName=='${cicd_user}'].Arn"
+cicd_query="Users[?UserName=='${cicd_user}'].Arn"
 jenkins_user_arn=""
+policy_arn=""
+policy_name="DevopsPolicy"
+policy_query="Policies[?PolicyName=='${policy_name}'].Arn"
 # Functions
 
 Create_group(){
@@ -48,19 +51,41 @@ Create_user(){
 
 Insert_User_into_Group(){
     echo "Checking if user ${cicd_user} is present into ${cicd_group}"
-    jenkins_user_arn=$(aws iam get-group --group-name "${cicd_group}" --no-cli-pager --query "${cicd_quey}" --output text )
+    jenkins_user_arn=$(aws iam get-group --group-name "${cicd_group}" --no-cli-pager --query "${cicd_query}" --output text )
     if [[ -z "${jenkins_user_arn}" ]];then
         echo "Adding ${cicd_user} into group ${cicd_group}"
-        aws iam add-user-to-group --user-name "${cicd_user}"  --group-name "${cicd_group}" --no-cli-pager 
+        aws iam add-user-to-group --user-name "${cicd_user}"  --group-name "${cicd_group}" --no-cli-pager \
+        || { echo "Failed to add user at the group, aborting"; exit 1; }
     else
         echo "User ${cicd_user} already present into group"
     fi
 }
 
+Create_policy(){
+    echo "Creating Devops policies"
+    policy_arn=$(aws iam list-policies --query $policy_query --output text)
+    if [[ -z "$policy_arn" ]];then
+        echo "Policy does not exist, creating it"
+        aws iam create-policy --policy-name "$policy_name" --policy-document file://devops_cicd_policy.json --no-cli-pager \
+        || { echo "Failed to create devops policy, aborting"; exit 1; }
+        echo "Policy successfully created"
+    else
+        echo "Policy already exist,skipping step"
+    fi
+}
+Attach_policy_group(){
+    echo "Attaching policy at the group"
+    policy_arn=$(aws iam list-policies --query $policy_query --output text)
+    aws iam attach-group-policy --group-name "$cicd_group" --policy-arn "$policy_arn"  \
+    || { echo "An error occurred giving permission at the group, aborting"; exit 1; }
+    echo "Policy attached at the group"
+}
 main(){
     Create_group
     Create_user
     Insert_User_into_Group
+    Create_policy
+    Attach_policy_group
 }
 
 main

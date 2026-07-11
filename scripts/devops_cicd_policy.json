@@ -1,0 +1,43 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid":"ResourceDevopsAccess",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:*",
+                "eks:*",
+                "ecr:*",
+                "rds:*",
+                "s3:*",
+                "cloudformation:*",
+                "elasticloadbalancing:*",
+                "autoscaling:*",
+                "secretsmanager:*",
+                "kms:*",
+                "logs:*",
+                "cloudwatch:*",
+                "lambda:*",
+                "route53:*",
+                "acm:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid":"DevopsIamAccess",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:CreatePolicy",
+                "iam:DeletePolicy",
+                "iam:GetRole",
+                "iam:ListRoles",
+                "iam:PassRole"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
