@@ -37,11 +37,31 @@
                 "iam:DeletePolicy",
                 "iam:GetRole",
                 "iam:ListRoles",
-                "iam:PassRole",
                 "iam:ListRolePolicies",
-                "iam:ListAttachedRolePolicies"
+                "iam:ListAttachedRolePolicies",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "DevopsPassRoleRestricted",
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": [
+                "arn:aws:iam::013484737363:role/eksctl-*",
+                "arn:aws:iam::013484737363:role/pet-shop-*",
+                "arn:aws:iam::013484737363:role/ng-*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": [
+                        "ec2.amazonaws.com",
+                        "eks.amazonaws.com",
+                        "eks-nodegroup.amazonaws.com"
+                    ]
+                }
+            }
         }
     ]
 }

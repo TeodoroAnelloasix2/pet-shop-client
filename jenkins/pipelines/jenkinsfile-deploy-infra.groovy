@@ -9,7 +9,7 @@ pipeline{
         INFRA_VERSION = "${env.BUILD_NUMBER}"
     }
     parameters{
-        booleanParam(name: 'autoApprove', defaultValue: true, description: 'Automatically run apply after generating plan?')
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     stages{
         stage('Create tfvars'){
@@ -38,7 +38,7 @@ pipeline{
         }
         stage('Approved'){
             when{
-                equals expected: true,actual: params.autoApprove
+               not{equals expected: true,actual: params.autoApprove} 
             }
             steps{
                 dir('./iac-terraform'){
