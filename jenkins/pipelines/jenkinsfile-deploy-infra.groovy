@@ -17,7 +17,8 @@ pipeline{
                 dir('./iac-terraform'){
                     sh(''' 
                     terraform init
-                    terraform plan -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=$(curl -s ifconfig.me)/32"
+                    my_ip="$(curl -s ifconfig.me)/32"
+                    terraform plan -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=${my_ip}"
                     terraform show -no-color "petshop-infra-${INFRA_VERSION}" >tfplan.txt
                     ''')
                 }
@@ -43,7 +44,8 @@ pipeline{
             steps{
                 dir('./iac-terraform'){
                 sh('''
-                terraform apply -target=module.vpc -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve "petshop-infra-${INFRA_VERSION}"
+                my_ip="$(curl -s ifconfig.me)/32"
+                terraform apply -target=module.vpc -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${INFRA_VERSION}"
                 ''')
                 }
             }
@@ -52,7 +54,8 @@ pipeline{
             steps{
                 dir('./iac-terraform'){
                 sh('''
-                terraform apply -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve "petshop-infra-${INFRA_VERSION}"
+                my_ip="$(curl -s ifconfig.me)/32"
+                terraform apply -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${INFRA_VERSION}"
                 ''')    
                 }
             }
