@@ -7,7 +7,6 @@ pipeline{
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-user-secret-access-key')
         AWS_DEFAULT_REGION='us-east-1'
         INFRA_VERSION = "${env.BUILD_NUMBER}"
-        EKS_PLAN_VERSION=${INFRA_VERSION}+1
     }
     parameters{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
@@ -67,8 +66,9 @@ pipeline{
                     sh(''' 
                     terraform init
                     my_ip="$(curl -s ifconfig.me)/32"
+                    export EKS_PLAN_VERSION=$(( INFRA_VERSION +1 ))
                     terraform plan  -out "petshop-infra-${EKS_PLAN_VERSION}" -var="public_access_cidr=${my_ip}"
-                    terraform show -no-color "petshop-infra-${INFRA_VERSION}" >tfplan.txt
+                    terraform show -no-color "petshop-infra-${EKS_PLAN_VERSION}" >tfplan.txt
                     ''')
                 }
             }
