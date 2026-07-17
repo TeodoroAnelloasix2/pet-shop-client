@@ -38,7 +38,7 @@ pipeline{
         }
         stage('Approved'){
             when{
-                equals expected: false, actual: params.autoApprove
+                not{equals expected: false, actual: params.autoApprove}
             }
             steps{
                 dir('./iac-terraform'){
