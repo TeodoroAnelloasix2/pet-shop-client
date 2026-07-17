@@ -36,7 +36,7 @@ pipeline{
                 }
             }
         }
-        stage('Approved'){
+        stage('Approve vpc'){
             when{
                 not{equals expected: false, actual: params.autoApprove}
             }
@@ -73,6 +73,22 @@ pipeline{
                 }
             }
         }
+        stage('Approve eks'){
+            when{
+                expression {!params.autoApprove}
+            }
+            steps{
+                dir('./iac-terraform'){
+                    script{
+                    def TEMP = env.INFRA_VERSION.toInteger()
+                    def EKS_PLAN_VERSION=TEMP+1
+                    def plan=readFile 'tfplan.txt'
+                    input message: "Do you want to apply the plan petshop-infra-${EKS_PLAN_VERSION}",
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                    }
+                }
+            }
+        }
         stage('Deploy whole infra'){
             steps{
                 dir('./iac-terraform'){
@@ -81,6 +97,15 @@ pipeline{
                 export EKS_PLAN_VERSION=$(( INFRA_VERSION +1 ))
                 terraform apply -lock-timeout=8m -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${EKS_PLAN_VERSION}"
                 ''')    
+                }
+            }
+        }
+        stage('Set Iam Service Account'){
+            steps{
+                dir('./scripts'){
+                    sh('''
+                    ./eks_config_alb_components.sh
+                    ''')
                 }
             }
         }

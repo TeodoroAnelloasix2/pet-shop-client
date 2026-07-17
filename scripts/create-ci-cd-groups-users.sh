@@ -18,6 +18,7 @@ jenkins_user_arn=""
 policy_arn=""
 policy_name="DevopsPolicy"
 policy_query="Policies[?PolicyName=='${policy_name}'].Arn"
+iamfullaccess="arn:aws:iam::aws:policy/IAMFullAccess"
 # Functions
 
 Create_group(){
@@ -78,6 +79,8 @@ Attach_policy_group(){
     policy_arn=$(aws iam list-policies --query $policy_query --output text)
     aws iam attach-group-policy --group-name "$cicd_group" --policy-arn "$policy_arn"  \
     || { echo "An error occurred giving permission at the group, aborting"; exit 1; }
+    aws iam attach-group-policy --group-name "$cicd_group" --policy-arn "$iamfullaccess" \
+    || { echo "An error occurred giving iam permission at the group, aborting"; exit 1; }
     echo "Policy attached at the group"
 }
 main(){
