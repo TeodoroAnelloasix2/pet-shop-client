@@ -24,13 +24,13 @@ pipeline{
                 }
             }
         }
-        stage('Plan'){
+        stage('Plan vpc'){
             steps{
                 dir('./iac-terraform'){
                     sh(''' 
                     terraform init
                     my_ip="$(curl -s ifconfig.me)/32"
-                    terraform plan -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=${my_ip}"
+                    terraform plan --target=module.vpc -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=${my_ip}"
                     terraform show -no-color "petshop-infra-${INFRA_VERSION}" >tfplan.txt
                     ''')
                 }
@@ -57,6 +57,19 @@ pipeline{
                 my_ip="$(curl -s ifconfig.me)/32"
                 terraform apply -lock-timeout=8m -target=module.vpc -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${INFRA_VERSION}"
                 ''')
+                }
+            }
+        }
+        stage('Plan eks'){
+            steps{
+                def NEW_VERSION=INFRA_VERSION+1
+                dir('./iac-terraform'){
+                    sh(''' 
+                    terraform init
+                    my_ip="$(curl -s ifconfig.me)/32"
+                    terraform plan  -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=${my_ip}"
+                    terraform show -no-color "petshop-infra-${INFRA_VERSION}" >tfplan.txt
+                    ''')
                 }
             }
         }
