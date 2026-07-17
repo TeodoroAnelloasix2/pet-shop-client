@@ -78,6 +78,7 @@ pipeline{
                 dir('./iac-terraform'){
                 sh('''
                 my_ip="$(curl -s ifconfig.me)/32"
+                export EKS_PLAN_VERSION=$(( INFRA_VERSION +1 ))
                 terraform apply -lock-timeout=8m -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${EKS_PLAN_VERSION}"
                 ''')    
                 }
