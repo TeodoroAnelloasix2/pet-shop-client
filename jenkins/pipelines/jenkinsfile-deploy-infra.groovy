@@ -7,6 +7,7 @@ pipeline{
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-user-secret-access-key')
         AWS_DEFAULT_REGION='us-east-1'
         INFRA_VERSION = "${env.BUILD_NUMBER}"
+        EKS_PLAN_VERSION=INFRA_VERSION+1
     }
     parameters{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
@@ -62,12 +63,11 @@ pipeline{
         }
         stage('Plan eks'){
             steps{
-                NEW_VERSION=INFRA_VERSION+1
                 dir('./iac-terraform'){
                     sh(''' 
                     terraform init
                     my_ip="$(curl -s ifconfig.me)/32"
-                    terraform plan  -out "petshop-infra-${INFRA_VERSION}" -var="public_access_cidr=${my_ip}"
+                    terraform plan  -out "petshop-infra-${EKS_PLAN_VERSION}" -var="public_access_cidr=${my_ip}"
                     terraform show -no-color "petshop-infra-${INFRA_VERSION}" >tfplan.txt
                     ''')
                 }
@@ -78,7 +78,7 @@ pipeline{
                 dir('./iac-terraform'){
                 sh('''
                 my_ip="$(curl -s ifconfig.me)/32"
-                terraform apply -lock-timeout=8m -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${INFRA_VERSION}"
+                terraform apply -lock-timeout=8m -var="public_access_cidr=${my_ip}" --auto-approve "petshop-infra-${EKS_PLAN_VERSION}"
                 ''')    
                 }
             }
