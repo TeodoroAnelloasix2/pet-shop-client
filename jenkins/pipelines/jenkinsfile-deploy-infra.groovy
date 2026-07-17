@@ -10,6 +10,7 @@ pipeline{
     }
     parameters{
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+        booleanParam(name: 'skipdeploy',defaultValue: false, description: 'Just create plan?')
     }
     stages{
         stage('Create tfvars'){
@@ -38,7 +39,7 @@ pipeline{
         }
         stage('Approve vpc'){
             when{
-                not{equals expected: false, actual: params.autoApprove}
+                expression{!params.autoApprove}
             }
             steps{
                 dir('./iac-terraform'){
@@ -51,6 +52,9 @@ pipeline{
             }
         }
         stage('Module vpc'){
+            when{
+                expression{params.skipdeploy}
+            }
             steps{
                 dir('./iac-terraform'){
                 sh('''
@@ -90,6 +94,9 @@ pipeline{
             }
         }
         stage('Deploy whole infra'){
+            when{
+                expression{params.skipdeploy}
+            }
             steps{
                 dir('./iac-terraform'){
                 sh('''
