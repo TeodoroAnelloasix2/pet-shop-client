@@ -62,7 +62,7 @@ pipeline{
         }
         stage('Plan eks'){
             steps{
-                def NEW_VERSION=INFRA_VERSION+1
+                NEW_VERSION=INFRA_VERSION+1
                 dir('./iac-terraform'){
                     sh(''' 
                     terraform init
