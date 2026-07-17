@@ -30,7 +30,7 @@ set -euo pipefail
 
 
 Get_policy_arn(){
-    policy_arn=$(aws iam list-policies --query "$1" --output text )    
+    policy_arn=$(aws iam list-policies --query "$1" --output text )
 }
 
 Create_policy_iamserviceaccount(){
@@ -84,7 +84,7 @@ Install_alb_controller(){
     
     helm repo update || { echo "Failed to update helm repo, aborting" ; exit 1; }
     
-    helm  --kubeconfig "$cfg_file"  install aws-load-balancer-controller eks/aws-load-balancer-controller \
+    helm  --kubeconfig "$cfg_file"  upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
         --namespace="$namespace" \
         --set clusterName="$cluster_name" \
         --set serviceAccount.create=false \
