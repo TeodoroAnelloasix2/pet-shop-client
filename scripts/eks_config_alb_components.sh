@@ -25,13 +25,35 @@ namespace="kube-system"
 cfg_file="${base_eks}/petshop.config"
 alb_repo_eks="https://aws.github.io/eks-charts"
 service_account_name="petshop-alb-controller"
+
+stack_name_patten="eksctl-pet-shop-cluster-addon-iamserviceaccount"
+stack_query="Stacks[?contains(StackName,'${stack_name_patten}')].StackId"
+
 set -euo pipefail
 
 
+Clean_stacks(){
+    echo "Deleting olds iam service accounts"
+    mapfile -t stack_ids < <(aws cloudformation describe-stacks   --query "${stack_query}" --no-cli-pager --output text )
+    for id in "${stack_ids[@]}"; do
+        if [[ ! -z "$id" ]];then
+            echo "Deleting  ${id}"
+            if aws cloudformation delete-stack --stack-name "$id" --region "$aws_region"; then
+
+                aws cloudformation wait stack-delete-complete --stack-name "$id" --region "$aws_region" || { echo "Timeout or error waiting for stack: ${id}"; exit 1; }
+            else 
+                echo "Failed to initiate deletion for stack: ${id}"
+                exit 1
+            fi
+        fi
+    done
+    echo "Done"
+}
 
 Get_policy_arn(){
     policy_arn=$(aws iam list-policies --query "$1" --output text )
 }
+
 
 Create_policy_iamserviceaccount(){
     echo "Get manage cluster components policy arn"
@@ -102,6 +124,7 @@ CreateOIDC(){
 
 main(){
     Create_config_file
+    Clean_stacks
     CreateOIDC
     Create_policy_iamserviceaccount
     Create_policy_iamserviceaccount_mandatory_resources

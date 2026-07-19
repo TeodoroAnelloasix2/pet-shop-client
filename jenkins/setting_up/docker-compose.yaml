@@ -63,7 +63,7 @@ services:
       - rvs-proxy
 
   jenkins-pipeline:
-    image: jenkins-cloud-native:v1
+    image: jenkins-cloud-native:customized
     container_name: jenkins-pipeline
     labels:
       - "traefik.enable=true"

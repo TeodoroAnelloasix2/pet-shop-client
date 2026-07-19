@@ -16,34 +16,17 @@
     start aws infra: 
         - terraform apply -target=module.vpc -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
         - terraform apply -var="public_access_cidr=$(curl -s ifconfig.me)/32" --auto-approve
+        - script/eks_config_alb_components.sh
 
+6) run jenkins-pet-shop-ci.groovy ( to build and push image )
 
+//TODO with pipeline
 
-
-
-//TODO
-
-create namespace  kubectl --kubeconfig ../petshop.config apply -f namespace.yaml
-
-7) Add certificate arn: sh -> kustomize edit add annotation alb.ingress.kubernetes.io/certificate-arn:${CERT_ARN}
-
-8) run script/eks_config_alb_components.sh
-
-9) kubectl apply -k overlays/prod/ --kubeconfig ./petshop.config
-////////////
-
-5) RUN  https://jenkins/job/pet-shop/job/pet-shop-CI/ which execute jenkinsfile-pet-shop-ci.groovy
-
-Steps 
-
-build app, get ecr info:
-
-   ecr_repo=$(aws ecr describe-repositories --region us-east-1 --query "repositories[?repositoryName=='prod_petshop_project'].repositoryUri" --no-cli-pager --output text)
-   
-   docker build -t $ecr_repo:dev1 .
-   
-   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 013484737363.dkr.ecr.us-east-1.amazonaws.com
-
+6) Add certificate arn: sh -> cd eks/overlay/prod &&  kustomize edit add annotation alb.ingress.kubernetes.io/certificate-arn:${CERT_ARN} 
+7) kustomize edit set image pet-shop-to-customize=013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project:23 // Example to debug 
+9) aws eks update-kubeconfig --region us-east-1 --name pet-shop-cluster --kubeconfig ./petshop.config --no-cli-pager
+10) create namespace  kubectl --kubeconfig ../petshop.config apply -f namespace.yaml
+11) kubectl apply -k overlays/prod/ --kubeconfig ./petshop.config
 
 
 
