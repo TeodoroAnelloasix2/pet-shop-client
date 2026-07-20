@@ -22,8 +22,7 @@ pipeline{
                 dir('eks/overlays/prod'){
                 sh('''
                 #!/bin/bash
-                mapfile -t ecr_tags < <(aws ecr list-images --repository-name prod_petshop_project --filter tagStatus=TAGGED,imageStatus=ACTIVE  --query 'imageIds[*].imageTag' --output json | jq -r '.[]')
-                last_tag=${ecr_tags[-1]}
+                last_tag=$(aws ecr list-images --repository-name prod_petshop_project --filter tagStatus=TAGGED,imageStatus=ACTIVE  --query 'imageIds[*].imageTag' --output json | jq -r '.[-1]')
                 kustomize edit set image pet-shop-to-customize=013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project:${last_tag}
                 ''')
                 }
