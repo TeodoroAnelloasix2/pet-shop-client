@@ -42,7 +42,8 @@ pipeline{
             steps{
                 dir('eks/overlays/prod'){
                 sh('''
-                kubectl --kubeconfig ../../petshop.config apply -k .
+                aws eks update-kubeconfig --region us-east-1 --name pet-shop-cluster --kubeconfig ./petshop.config --no-cli-pager
+                kubectl --kubeconfig ./petshop.config apply -k .
                 ''')
                 }
             }
