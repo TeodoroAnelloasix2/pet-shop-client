@@ -18,7 +18,7 @@ pipeline{
             }
         }
         stage('kustomize image'){
-            step{
+            steps{
                 dir('eks/overlays/prod'){
                 sh('''
                 mapfile -t ecr_tags < <(aws ecr list-images --repository-name prod_petshop_project --filter tagStatus=TAGGED,imageStatus=ACTIVE  --query 'imageIds[*].imageTag' --output json | jq -r '.[]')
