@@ -42,7 +42,7 @@ pipeline{
             steps{
                 dir('eks/overlays/prod'){
                 sh('''
-                kubectl --kubeconfig ./petshop.config apply -k .
+                kubectl --kubeconfig ../../petshop.config apply -k .
                 ''')
                 }
             }
