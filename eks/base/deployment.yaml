@@ -1,7 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment 
+kind: Deployment
 metadata:
   name: pet-shop-deployment
+  labels:
+    app: pet-shop-app
 spec:
   replicas: 2
   selector:

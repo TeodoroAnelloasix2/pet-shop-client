@@ -6,14 +6,7 @@ resources:
 
 namespace: pet-shop-prod
 
-labels:
-  - pairs:
-      app: pet-shop
-      managed-by: kustomize
-    includeSelectors: false  
-    includeTemplates: false
-
 images:
-  - name: pet-shop-to-customize
-    newName: "013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project"
-    newTag: ${IMAGE_TAG}
+- name: pet-shop-to-customize
+  newName: 013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project
+  newTag: ${IMAGE_TAG}
