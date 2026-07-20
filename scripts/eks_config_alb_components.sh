@@ -35,8 +35,15 @@ set -euo pipefail
 Clean_stacks(){
     echo "Deleting olds iam service accounts"
     mapfile -t stack_ids < <(aws cloudformation describe-stacks   --query "${stack_query}" --no-cli-pager --output json | jq -r '.[]' )
+
+    
     for id in "${stack_ids[@]}"; do
         if [[ ! -z "$id" ]];then
+            echo "Disabling TerminationProtection"
+            aws cloudformation update-termination-protection \
+            --no-enable-termination-protection \
+            --stack-name "$id" --region "$aws_region"
+            sleep 1
             echo "Deleting  ${id}"
             if aws cloudformation delete-stack --stack-name "$id" --region "$aws_region"; then
 
