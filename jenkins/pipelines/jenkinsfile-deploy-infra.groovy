@@ -53,7 +53,7 @@ pipeline{
         }
         stage('Module vpc'){
             when{
-                expression{params.skipdeploy}
+                expression{!params.skipdeploy}
             }
             steps{
                 dir('./iac-terraform'){
@@ -95,7 +95,7 @@ pipeline{
         }
         stage('Deploy whole infra'){
             when{
-                expression{params.skipdeploy}
+                expression{!params.skipdeploy}
             }
             steps{
                 dir('./iac-terraform'){
