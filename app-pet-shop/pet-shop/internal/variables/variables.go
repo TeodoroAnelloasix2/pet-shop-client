@@ -1,7 +1,8 @@
 package variables
 
 var (
-	SecretName = "petshop-db-secret-pem"
+	SecretName    = "petshop-db-secret-pem"
+	BundleCertUrl = "https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem"
 )
 
 const (

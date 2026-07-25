@@ -55,7 +55,8 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │   │   └── service.yaml
 │   ├── overlays
 │   │   └── prod
-│   │       └── kustomization.yaml
+│   │       ├── kustomization.yaml
+│   │       └── serviceaccount-deployment-patch.yaml
 │   └── petshop.config
 ├── how_to_run.md
 ├── iac-terraform
@@ -90,6 +91,7 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 ├── jenkins
 │   ├── pipelines
 │   │   ├── jenkinsfile-deploy-infra.groovy
+│   │   ├── jenkinsfile-pet-shop-cd.groovy
 │   │   └── jenkinsfile-pet-shop-ci.groovy
 │   └── setting_up
 │       ├── awscliv2.zip
@@ -98,6 +100,9 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 │       ├── dynamic
 │       │   └── tls.yaml
 │       ├── eksctl_Linux_amd64.tar.gz
+│       ├── helm-v4.2.3-linux-amd64.tar.gz
+│       ├── kubectl-1.36.tar.gz
+│       ├── kustomize-v5.8.1.tar.gz
 │       ├── set_up_jenkins.sh
 │       ├── terraform_1.15.5_linux_amd64.zip
 │       └── traefik_certs
@@ -117,5 +122,4 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
     ├── jenkins-user-assume-policy.json
     ├── pet-shop-jenkins-ci-role.json
     └── private-ecr-policy-pet-shop-ci.json
-
 ```
