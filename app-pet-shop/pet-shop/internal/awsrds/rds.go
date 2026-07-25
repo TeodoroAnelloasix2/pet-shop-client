@@ -28,7 +28,7 @@ func GetConn() (*pgx.Conn, error) {
 	Password := cred.Password
 	User := cred.Username
 	Crt := variables.BundleCertFile
-	dsn := fmt.Sprintf("postgres://%s:%s@pet-shop-psql-bbdd.cqz0qo6cyfkc.us-east-1.rds.amazonaws.com:5432/petshopdb?sslmode=verify-full&sslrootcert=./%s", Crt, User, Password)
+	dsn := fmt.Sprintf("postgres://%s:%s@pet-shop-psql-bbdd.cqz0qo6cyfkc.us-east-1.rds.amazonaws.com:5432/petshopdb?sslmode=verify-full&sslrootcert=./%s", User, Password, Crt)
 	ctx, cancel := ctxgenerator.ContextGenerator()
 	defer cancel()
 	conn, err := pgx.Connect(ctx, dsn)
