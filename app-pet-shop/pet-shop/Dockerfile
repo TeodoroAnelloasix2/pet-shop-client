@@ -17,7 +17,8 @@ WORKDIR /webapp
 
 COPY ./resources .
 COPY --from=compiler /webapp/runner /webapp/runner
-RUN apt update && apt install curl  ca-certificates -y && update-ca-certificates
+
+RUN apt update && apt install curl jq ca-certificates -y && update-ca-certificates
 
 EXPOSE 80
 #CMD ["sh","-c","tail -f","/dev/null"] #Debug

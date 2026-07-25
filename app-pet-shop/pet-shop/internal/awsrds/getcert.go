@@ -41,6 +41,6 @@ func CreateCert() (err error) {
 	defer resp.Body.Close()
 	size, err := io.Copy(file, resp.Body)
 	defer file.Close()
-	fmt.Printf("Downloaded a file %s with size %d", fileName, size)
+	fmt.Printf("Downloaded a file %s with size %d\n", fileName, size)
 	return nil
 }

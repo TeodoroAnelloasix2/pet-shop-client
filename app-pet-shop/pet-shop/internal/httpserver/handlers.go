@@ -2,7 +2,9 @@ package httpserver
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"pet-shop/internal/awsrds"
 	"pet-shop/internal/secretaws"
 	"text/template"
 )
@@ -30,8 +32,29 @@ func TestHealty(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	fmt.Println("Step 1, Secretmanager ok ")
+
+	if err := awsrds.CreateCert(); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]string{
+			"status":  "unhealty",
+			"service": "rds-cert",
+			"error":   err.Error(),
+		})
+		return
+	}
+	if _, err := awsrds.GetConn(); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]string{
+			"status":  "unhealty",
+			"service": "rds-connection",
+			"error":   err.Error(),
+		})
+		return
+	}
+
 	//S3
-	//BBDD
+
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"status":  "ok",
