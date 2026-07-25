@@ -11,7 +11,7 @@ COPY ./internal ./internal
 
 RUN GOOS=linux GOARCH=amd64 go build -o runner cmd/app/main.go
 
-FROM debian:bookworm-slim
+FROM debian:trixie
 
 WORKDIR /webapp
 
