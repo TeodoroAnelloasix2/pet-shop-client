@@ -22,6 +22,7 @@ policy_arn=""
 base_eks="../eks"
 namespace_file="${base_eks}/base/namespace.yaml"
 namespace="kube-system"
+project_namespace="pet-shop-prod"
 cfg_file="${base_eks}/petshop.config"
 alb_repo_eks="https://aws.github.io/eks-charts"
 service_account_name="petshop-alb-controller"
@@ -61,7 +62,7 @@ Get_policy_arn(){
     policy_arn=$(aws iam list-policies --query "$1" --output text )
 }
 
-
+# IAMSERVICEACCOUNT to manage alb components
 Create_policy_iamserviceaccount(){
     echo "Get manage cluster components policy arn"
     Get_policy_arn $policy_alb_query
@@ -73,6 +74,7 @@ Create_policy_iamserviceaccount(){
         Get_policy_arn $policy_alb_query
     fi
     
+    # Create iamserviceaccount into kube-system namespace
     eksctl create iamserviceaccount --region "$aws_region" \
     --namespace="$namespace"    \
     --cluster="$cluster_name"  \
@@ -83,7 +85,9 @@ Create_policy_iamserviceaccount(){
 
 }
 
+# IAMSERVICEACCOUNT to interact with aws components
 Create_policy_iamserviceaccount_mandatory_resources(){
+    
     echo "Get mandatory resources policy arn"
     Get_policy_arn "$policy_mandatory_resources_query"
     if  [[ -z "$policy_arn" ]];then
@@ -91,8 +95,9 @@ Create_policy_iamserviceaccount_mandatory_resources(){
         exit 1
     fi
     
+    # CReate iamserviceaccount into project namespace
     eksctl create iamserviceaccount --region "$aws_region" \
-    --namespace="$namespace"    \
+    --namespace="$project_namespace"    \
     --cluster="$cluster_name"  \
     --name="$svc_account_policy_mandatory_resources" \
     --attach-policy-arn="$policy_arn" \
@@ -105,6 +110,11 @@ Create_config_file(){
       --name "$cluster_name" \
       --kubeconfig "$cfg_file" \
       --no-cli-pager || { echo "Failed to create config file, aborting" ; exit 1; }
+}
+
+Create_namespace(){
+    kubectl --kubeconfig "$cfg_file" apply -f "$namespace_file" || \
+    { echo "Failed to create pet shop namespace, aborting"; exit 1; }
 }
 
 Install_alb_controller(){
@@ -133,6 +143,7 @@ main(){
     Create_config_file
     Clean_stacks
     CreateOIDC
+    Create_namespace
     Create_policy_iamserviceaccount
     Create_policy_iamserviceaccount_mandatory_resources
     Install_alb_controller

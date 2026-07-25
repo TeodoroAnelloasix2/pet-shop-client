@@ -38,13 +38,32 @@ pipeline{
                 }
             }
         }
-        stage('Apply kustomization'){
+        stage('Apply kustomization infra'){
             steps{
                 dir('eks/overlays/prod'){
                 sh('''
                 aws eks update-kubeconfig --region us-east-1 --name pet-shop-cluster --kubeconfig ./petshop.config --no-cli-pager
                 kubectl --kubeconfig ./petshop.config apply -k .
                 ''')
+                }
+            }
+        }
+        stage('Update iamserviceaccount'){
+            steps{
+                dir('eks/overlays/prod'){
+                    sh('''
+                    kubectl --kubeconfig ./petshop.config set serviceaccount \
+                    deployment/pet-shop-deployment \
+                    pet-shop-mandatoryresources-allow-svc-account \
+                    -n pet-shop-prod
+                
+                    kubectl --kubeconfig ./petshop.config rollout restart \
+                    deployment/pet-shop-deployment -n pet-shop-prod
+                
+                    kubectl --kubeconfig ./petshop.config rollout status \
+                    deployment/pet-shop-deployment -n pet-shop-prod --timeout=5m
+                    
+                    ''')
                 }
             }
         }

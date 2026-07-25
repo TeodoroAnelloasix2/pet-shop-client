@@ -6,6 +6,8 @@ resources:
 
 namespace: pet-shop-prod
 
+#patchesStrategicMerge:
+#  - serviceaccount-deployment-patch.yaml
 images:
 - name: pet-shop-to-customize
   newName: 013484737363.dkr.ecr.us-east-1.amazonaws.com/prod_petshop_project
