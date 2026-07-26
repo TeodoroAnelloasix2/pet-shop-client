@@ -22,6 +22,7 @@ pipeline{
                 dir('./iac-terraform'){
                     sh('''
                     my_ip="$(curl -s ifconfig.me)/32"
+                    terraform init
                     terraform destroy --target=molude.eks  -var="public_access_cidr=${my_ip}" --auto-approve
                     ''')
                 }
@@ -32,6 +33,7 @@ pipeline{
                 dir('./iac-terraform'){
                     sh('''
                     my_ip="$(curl -s ifconfig.me)/32"
+                    terraform init
                     terraform destroy --target=molude.ecr  -var="public_access_cidr=${my_ip}" --auto-approve
                     ''')
                 }
@@ -42,6 +44,7 @@ pipeline{
                 dir('./iac-terraform'){
                     sh('''
                     my_ip="$(curl -s ifconfig.me)/32"
+                    terraform init
                     terraform destroy -var="public_access_cidr=${my_ip}" --auto-approve
                     ''')
                 }
