@@ -48,7 +48,7 @@ func GetConn() (*pgx.Conn, error) {
 
 }
 
-func PrepareDB(Db *pgx.Conn) (err error) {
+func PrepareDB(Db *pgx.Conn, Query string) (err error) {
 	fmt.Println("Preparing database")
 	ctx, cancel := ctxgenerator.ContextGenerator()
 	defer cancel()
@@ -70,15 +70,15 @@ func PrepareDB(Db *pgx.Conn) (err error) {
 		}
 	}()
 	fmt.Println("Transaction prepared properly")
-	fmt.Println("Creating table Users")
-	res, err := tx.Exec(ctx, CreateTableQuery)
+	fmt.Println("Executing query: ", Query)
+	res, err := tx.Exec(ctx, Query)
 	if err != nil {
-		return fmt.Errorf("failed to create table %w", err)
+		return fmt.Errorf("failed to execute query %w", err)
 	}
 	ctx, cancel = ctxgenerator.ContextGenerator()
 	defer cancel()
 	i := res.RowsAffected()
-	fmt.Printf("Table created, affected rows: %d\n", i)
+	fmt.Printf("Affected rows: %d\n", i)
 	if err := tx.Commit(ctx); err != nil {
 		return fmt.Errorf("failed to execute commit %w", err)
 	}

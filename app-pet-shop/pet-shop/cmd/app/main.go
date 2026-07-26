@@ -26,7 +26,12 @@ func main() {
 	ctx, cancel := ctxgenerator.ContextGenerator()
 	defer cancel()
 	defer c.Close(ctx)
-	err = awsrds.PrepareDB(c)
+	err = awsrds.PrepareDB(c, awsrds.DopTableQuery)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	err = awsrds.PrepareDB(c, awsrds.CreateTableQuery)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
