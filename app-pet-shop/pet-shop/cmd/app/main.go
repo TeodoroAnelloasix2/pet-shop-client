@@ -10,6 +10,12 @@ import (
 )
 
 func main() {
+	fmt.Println("Getting CA file")
+	err := awsrds.CreateCert()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	fmt.Println("Starting db")
 	c, err := awsrds.GetConn()
 
