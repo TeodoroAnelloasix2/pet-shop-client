@@ -17,6 +17,18 @@ pipeline{
                 }
             }
         }
+        stage('Create tfvars'){
+            steps{
+                withCredentials([file(credentialsId: 'petshop-tfvars',variable: 'f')]){
+                    dir('./iac-terraform'){
+                        sh('''
+                        cp ${f} ./terraform.tfvars
+                        terraform fmt --recursive
+                        ''')
+                    }
+                }
+            }
+        }
         stage('Delete eks'){
             steps{
                 dir('./iac-terraform'){
