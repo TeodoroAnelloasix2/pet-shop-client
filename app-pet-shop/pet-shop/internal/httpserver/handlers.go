@@ -53,8 +53,6 @@ func TestHealty(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//S3
-
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"status":  "ok",
