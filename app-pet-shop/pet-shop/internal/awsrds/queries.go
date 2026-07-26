@@ -6,5 +6,5 @@ var (
 		Surname varchar(100);
 		Email varchar(100);
 		Password varchar(255);
-	);`
+	)`
 )
