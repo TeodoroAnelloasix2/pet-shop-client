@@ -8,6 +8,7 @@ var (
 
 const (
 	VirginiaRegion = "us-east-1"
+	SessionName    = "pet-shop-session"
 )
 
 type Credentials struct {
@@ -18,6 +19,8 @@ type Credentials struct {
 type UserClient struct {
 	Id       int
 	Name     string
+	Surname  string
 	Email    string
 	Password string
+	Islogged bool
 }

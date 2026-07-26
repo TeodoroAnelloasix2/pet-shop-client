@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"pet-shop/internal/awsrds"
+	"pet-shop/internal/formatsecret"
 	"pet-shop/internal/secretaws"
+	"pet-shop/internal/variables"
 	"text/template"
 )
 
@@ -43,7 +45,8 @@ func TestHealty(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	if _, err := awsrds.GetConn(); err != nil {
+	P, U := formatsecret.PrepareSecret()
+	if _, err := awsrds.GetConn(U, P, variables.BundleCertFile); err != nil {
 		w.WriteHeader(http.StatusServiceUnavailable)
 		json.NewEncoder(w).Encode(map[string]string{
 			"status":  "unhealty",

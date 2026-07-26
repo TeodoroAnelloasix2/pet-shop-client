@@ -6,7 +6,9 @@ import (
 	"os"
 	"pet-shop/internal/awsrds"
 	"pet-shop/internal/ctxgenerator"
+	"pet-shop/internal/formatsecret"
 	"pet-shop/internal/httpserver"
+	"pet-shop/internal/variables"
 )
 
 func main() {
@@ -16,8 +18,10 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	Password, User := formatsecret.PrepareSecret()
+	Crt := variables.BundleCertFile
 	fmt.Println("Starting db")
-	c, err := awsrds.GetConn()
+	c, err := awsrds.GetConn(User, Password, Crt)
 
 	if err != nil {
 		fmt.Println(err)
