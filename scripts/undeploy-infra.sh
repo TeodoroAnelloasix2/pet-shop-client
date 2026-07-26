@@ -39,7 +39,7 @@ Delete_images(){
         if [[ "$img_num" -gt 0 ]];then
             aws ecr batch-delete-image \
             --repository-name "$ecr_repository"   \
-            --images-ids  "$image_list" --region "$aws_region" \
+            --image-ids  "$image_list" --region "$aws_region" \
             || { echo "Error deleting images, aborting it"; exit 1; }
         fi
         echo "Images deleted"
