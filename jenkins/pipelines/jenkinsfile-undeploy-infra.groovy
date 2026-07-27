@@ -51,6 +51,16 @@ pipeline{
                 }
             }
         }
+        //TODO
+        stage('Detach network interfaces'){
+            steps{
+                dir('./scripts'){
+                    sh('''
+                    ./detach-network-interfaces.sh
+                    ''')
+                }
+            }
+        }
          stage('Delete infra'){
             steps{
                 dir('./iac-terraform'){
