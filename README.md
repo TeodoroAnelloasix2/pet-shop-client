@@ -5,6 +5,13 @@
 This project demonstrates my Devops capabilities by building a **cloud-antive application** from sratch on AWS.
 The entire infrastructure is managed as a code, with automated CI/CD pipelines and running on kubernetes.
 
+
+> 🚧 **Status: Work in Progress**  
+> The core infrastructure is fully functional. I'm currently implementing:
+> - User authentication on the application (login/registration)
+> - Automated infrastructure teardown pipeline (`undeploy-infra`)
+
+
 ### Architecture
 
 - **Application**: Golang web app (containerized)
