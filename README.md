@@ -23,8 +23,8 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 > - User authentication on the application (login/registration)
 > - Automated infrastructure teardown pipeline (`undeploy-infra`)
 
+![alt text](pet-shop-infra.jpg)
 
-/home/itachi/Downloads/pet-shop-infra.jpg
 
 ### Project structure
 
