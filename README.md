@@ -6,12 +6,6 @@ This project demonstrates my Devops capabilities by building a **cloud-antive ap
 The entire infrastructure is managed as a code, with automated CI/CD pipelines and running on kubernetes.
 
 
-> 🚧 **Status: Work in Progress**  
-> The core infrastructure is fully functional. I'm currently implementing:
-> - User authentication on the application (login/registration)
-> - Automated infrastructure teardown pipeline (`undeploy-infra`)
-
-
 ### Architecture
 
 - **Application**: Golang web app (containerized)
@@ -19,6 +13,18 @@ The entire infrastructure is managed as a code, with automated CI/CD pipelines a
 - **Infrastructure as Code**: Terraform (remote state on S3 + DynamoDB locking)
 - **CI/CD**: Jenkins pipeline (build → test → push → deploy)
 - **Storage**: S3 bucket (static assets) + DynamoDB (login)
+
+
+
+
+
+> 🚧 **Status: Work in Progress**  
+> The core infrastructure is fully functional. I'm currently implementing:
+> - User authentication on the application (login/registration)
+> - Automated infrastructure teardown pipeline (`undeploy-infra`)
+
+
+
 
 ### Project structure
 
