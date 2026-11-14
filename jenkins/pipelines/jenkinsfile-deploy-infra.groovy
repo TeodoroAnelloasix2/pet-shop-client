@@ -18,6 +18,7 @@ pipeline{
                 withCredentials([file(credentialsId: 'petshop-tfvars',variable: 'f')]){
                     dir('./iac-terraform'){
                         sh('''
+                        res = $()
                         cp ${f} ./terraform.tfvars
                         terraform fmt --recursive
                         ''')
@@ -118,6 +119,11 @@ pipeline{
         }
     }
     post {
-        always {sleep 3}
+        always {
+            sh('''
+            rm -rf $(find /var/jenkins_home/workspace/pet-shop -name terraform.tfvars -type f)
+            ''')
+            sleep 3
+        }
     }
 }
