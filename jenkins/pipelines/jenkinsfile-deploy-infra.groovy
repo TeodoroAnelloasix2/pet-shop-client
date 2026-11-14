@@ -18,7 +18,6 @@ pipeline{
                 withCredentials([file(credentialsId: 'petshop-tfvars',variable: 'f')]){
                     dir('./iac-terraform'){
                         sh('''
-                        res = $()
                         cp ${f} ./terraform.tfvars
                         terraform fmt --recursive
                         ''')
