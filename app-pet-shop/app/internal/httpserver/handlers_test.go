@@ -60,16 +60,16 @@ func TestSayBye(t *testing.T) {
 }
 
 // TestNewOne verifica l'endpoint "/newone"
-func TestNewOne(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/newone", nil)
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(NewOne)
-	handler.ServeHTTP(rr, req)
+// func TestNewOne(t *testing.T) {
+// 	req, _ := http.NewRequest("GET", "/newone", nil)
+// 	rr := httptest.NewRecorder()
+// 	handler := http.HandlerFunc(NewOne)
+// 	handler.ServeHTTP(rr, req)
 
-	if rr.Code != http.StatusOK {
-		t.Errorf("NewOne ha restituito %v, atteso %v", rr.Code, http.StatusOK)
-	}
-	if !strings.Contains(rr.Body.String(), "Hi from new one") {
-		t.Errorf("NewOne body non contiene 'Hi from new one': got %v", rr.Body.String())
-	}
-}
+// 	if rr.Code != http.StatusOK {
+// 		t.Errorf("NewOne ha restituito %v, atteso %v", rr.Code, http.StatusOK)
+// 	}
+// 	if !strings.Contains(rr.Body.String(), "Hi from new one") {
+// 		t.Errorf("NewOne body non contiene 'Hi from new one': got %v", rr.Body.String())
+// 	}
+// }

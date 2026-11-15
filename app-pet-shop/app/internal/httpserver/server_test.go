@@ -17,8 +17,8 @@ func TestRouter(t *testing.T) {
 		{"Home", "/", http.StatusOK},
 		{"Alive", "/alive", http.StatusOK},
 		{"Bye", "/bye", http.StatusOK},
-		{"NewOne", "/newone", http.StatusOK},
-		{"RottaInesistente", "/non-esiste", http.StatusNotFound},
+		//{"NewOne", "/newone", http.StatusOK},
+		{"doesntexist", "/example", http.StatusNotFound},
 	}
 
 	for _, tt := range tests {

@@ -31,9 +31,9 @@ func SayBye(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NewOne(w http.ResponseWriter, r *http.Request) {
-	_, err := w.Write([]byte("Hi from new one"))
-	if err != nil {
-		log.Fatalf("error running new func: %v", err)
-	}
-}
+// func NewOne(w http.ResponseWriter, r *http.Request) {
+// 	_, err := w.Write([]byte("Hi from new one"))
+// 	if err != nil {
+// 		log.Fatalf("error running new func: %v", err)
+// 	}
+// }
