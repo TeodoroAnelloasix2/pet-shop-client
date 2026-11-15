@@ -8,9 +8,18 @@ RUN go mod download
 
 COPY app /webapp/
 
+RUN go test ./... -v
 RUN GOOS=linux GOARCH=amd64 go build -o runner main.go
 
-FROM scratch
+FROM debian:bookworm-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN useradd -u 1000 -m -d /home/appuser -s /bin/bash appuser
+
+USER appuser
 
 WORKDIR /webapp/
 

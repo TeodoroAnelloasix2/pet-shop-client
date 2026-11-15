@@ -12,6 +12,7 @@ func HandlersPath() *mux.Router {
 	router.HandleFunc("/", HandleHome)
 	router.HandleFunc("/alive", TestHealty)
 	router.HandleFunc("/bye", SayBye)
+	router.HandleFunc("/newone", NewOne)
 	return router
 }
 

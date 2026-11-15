@@ -11,9 +11,18 @@ pipeline {
        IMAGE_VERSION = "${env.BUILD_NUMBER}"
     }
     stages {
+        stage('Unit test'){
+            steps{
+                dir('./app-pet-shop/app'){
+                    sh('''
+                    docker run --rm -v $(pwd):/app -w /app golang:1.25.5-alpine3.23 go test ./... -v
+                    ''')
+                }
+            }
+        }
         stage('Build'){
             steps{
-                dir('./app-pet-shop/pet-shop'){
+                dir('./app-pet-shop'){
                     sh('''
                     docker build -t ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_VERSION} .
                     ''')
