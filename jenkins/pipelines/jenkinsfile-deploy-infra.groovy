@@ -118,6 +118,11 @@ pipeline{
         }
     }
     post {
-        always {sleep 3}
+        always {
+            sh('''
+            rm -rf $(find /var/jenkins_home/workspace/pet-shop -name terraform.tfvars -type f)
+            ''')
+            sleep 3
+        }
     }
 }
