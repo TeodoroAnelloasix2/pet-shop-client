@@ -24,6 +24,7 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '5'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
   ingressClassName: petshop-prod-ingress-class
   rules:
